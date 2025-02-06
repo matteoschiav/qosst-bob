@@ -31,6 +31,7 @@ import matplotlib.pyplot as plt
 from qosst_core.logging import create_loggers
 from qosst_core.infos import get_script_infos
 from qosst_core.participant import Participant
+from qosst_core.utils import export_np
 
 from qosst_bob import __version__
 from qosst_bob.bob import Bob
@@ -70,6 +71,9 @@ def _create_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--plot", dest="plot", action="store_true", help="Plot the data."
+    )
+    parser.add_argument(
+        "--save-raw-thres", type=float, default=argparse.SUPPRESS, help="Save the raw data if transmittance is below the threshold."
     )
     parser.add_argument(
         "num_rep", type=int, help="Number of repetitions of the experiment."
@@ -172,6 +176,18 @@ def main():
                 bob.electronic_symbols
             )
             datetimes[j] = current_datetime
+
+            if ("save_raw_thres" in args) and (transmittance < args.save_raw_thres):
+                logger.info("The measured transmittance (%f) is below the chosen threshold (%f): save the raw data",
+                    transmittance,
+                    args.save_raw_thres
+                )
+                export_np(
+                    bob.signal_data,
+                    bob.config.bob.export_directory,
+                    data_name=f'acq{j}'
+                )
+
             j += 1
             error = 0
         except ValueError as exc:
