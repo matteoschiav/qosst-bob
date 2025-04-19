@@ -33,7 +33,7 @@ qosst-core = { git = "https://github.com/matteoschiav/qosst-core", branch = "syn
 #qosst-hal = "^0.10.0"
 qosst-hal = { git = "https://github.com/qosst/qosst-hal", branch = "dev" }
 #qosst-skr = "^0.10.0"
-qosst-skr = { git = "https://github.com/qosst/qosst-skr", branch = "dev" }
+qosst-skr = { git = "https://github.com/matteoschiav/qosst-skr", branch = "synchro" }
 matplotlib = [
     { version = "^3.5.1", python = ">=3.9, <3.11" },
     { version = "^3.7.1", python = ">=3.11, <3.14" },
