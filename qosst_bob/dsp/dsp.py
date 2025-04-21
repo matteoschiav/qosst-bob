@@ -37,7 +37,7 @@ from qosst_core.schema.detection import (
     SINGLE_POLARISATION_RF_HETERODYNE,
 )
 from qosst_core.comm.filters import root_raised_cosine_filter
-from qosst_core.synchronization.syncrhonization import SynchronizationSequence
+from qosst_core.synchronization import SynchronizationSequence
 
 from .synchro import synchronize
 from .pilots import (
