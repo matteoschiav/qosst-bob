@@ -25,7 +25,7 @@ import numpy as np
 from scipy import signal
 from scipy.ndimage import uniform_filter1d
 
-from qosst_core.synchronization.synchronization import SynchronizationSequence
+from qosst_core.synchronization import SynchronizationSequence
 
 from .resample import upsample
 
@@ -97,7 +97,7 @@ def synchronize(
     beginning_synchro = lags[np.argmax(xcorr)] + xcorr_start_point
     end_synchro = len(synchro) + beginning_synchro
 
-    if True:
+    if False:
         # Debugging code
         from matplotlib import pyplot as plt
         center = beginning_synchro - xcorr_start_point
