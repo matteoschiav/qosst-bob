@@ -1199,7 +1199,7 @@ def _dsp_bob_general(
     # let's reestimate f_beat more properly.
     len_synchro = np.ceil(synchro_obj.length * equi_adc_rate / dac_rate).astype(int)
     f_pilot_real_1, f_pilot_real_2 = find_two_pilots(
-        data[end_zc + len_synchro : end_zc + len_synchro + num_samples_fbeat_estimation],
+        data[end_synchro + len_synchro : end_synchro + len_synchro + num_samples_fbeat_estimation],
         equi_adc_rate,
         excl=excl,
     )
@@ -1521,10 +1521,10 @@ def _dsp_bob_direct_pilot_tracking(
     logger.info('Searching for start of the synchronization sequence')
     synchro_search_start = max(preamble_synchro_start - 4 * synchro_obj.length * synchro_oversampling, 0)
     synchro_search_end = synchro_search_start + 8 * synchro_obj.length * synchro_oversampling
-    data_zc = data[synchro_search_start:synchro_search_end]
-    shift = np.exp(-1j * 2 * np.pi * np.arange(len(data_zc)) * f_beat / equi_adc_rate)
-    begin_zc, end_zc = synchronize(
-        data_zc * shift, synchro_obj,
+    data_synchro = data[synchro_search_start:synchro_search_end]
+    shift = np.exp(-1j * 2 * np.pi * np.arange(len(data_synchro)) * f_beat / equi_adc_rate)
+    begin_synchro, end_synchro = synchronize(
+        data_synchro * shift, synchro_obj,
         resample=equi_adc_rate / synchro_rate)
     begin_synchro += synchro_search_start
     end_synchro += synchro_search_start
