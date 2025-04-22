@@ -76,6 +76,9 @@ def _create_parser() -> argparse.ArgumentParser:
         "--save-raw-thres", type=float, default=argparse.SUPPRESS, help="Save the raw data if transmittance is below the threshold."
     )
     parser.add_argument(
+        "--export-data", type=bool, default=False, help="Export the raw data."
+    )
+    parser.add_argument(
         "num_rep", type=int, help="Number of repetitions of the experiment."
     )
     return parser
@@ -177,7 +180,7 @@ def main():
             )
             datetimes[j] = current_datetime
 
-            if ("save_raw_thres" in args) and (transmittance < args.save_raw_thres):
+            if (("save_raw_thres" in args) and (transmittance < args.save_raw_thres)) or args.export_data:
                 logger.info("The measured transmittance (%f) is below the chosen threshold (%f): save the raw data",
                     transmittance,
                     args.save_raw_thres
@@ -185,8 +188,24 @@ def main():
                 export_np(
                     bob.signal_data,
                     bob.config.bob.export_directory,
-                    data_name=f'acq{j}'
+                    data_name=f'acq{j}_signal'
                 )
+                export_np(
+                    symbols_alice,
+                    bob.config.bob.export_directory,
+                    data_name=f'acq{j}_alice_symbols'
+                )
+                export_np(
+                    indices,
+                    bob.config.bob.export_directory,
+                    data_name=f'acq{j}_indices'
+                )
+                export_np(
+                    np.array([photon_number,]),
+                    bob.config.bob.export_directory,
+                    data_name=f'acq{j}_n'
+                )
+
 
             j += 1
             error = 0
